@@ -87,10 +87,7 @@ class AnalyticsAgent(_TemplateAgent):
     role = AgentRole.ANALYTICS
 
     def _system(self) -> str:
-        return (
-            "You are an analytics agent. Summarize numbers, trends, and "
-            "anomalies. Be precise."
-        )
+        return "You are an analytics agent. Summarize numbers, trends, and anomalies. Be precise."
 
 
 def build_agent(role: AgentRole, provider: Provider) -> Agent:

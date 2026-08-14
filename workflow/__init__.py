@@ -8,12 +8,9 @@ User -> LLM -> Answer call.
 from __future__ import annotations
 
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable, List, Optional
 
-from agents import Agent, build_agent
-from knowledge import KnowledgeBase
-from observability import AuditLog
 from core import (
     AgentResult,
     AgentRole,
@@ -21,13 +18,14 @@ from core import (
     Task,
     WorkflowRun,
 )
+from knowledge import KnowledgeBase
 
 
 @dataclass
 class WorkflowPlan:
     """Ordered steps produced by the planner."""
 
-    steps: List[str] = field(default_factory=list)
+    steps: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {"steps": self.steps}
@@ -54,7 +52,7 @@ class ApprovalGate:
     (or an explicit `approve_all=True` flag for tests) can drive it.
     """
 
-    def __init__(self, approver: Optional[Callable[[AgentResult], bool]] = None):
+    def __init__(self, approver: Callable[[AgentResult], bool] | None = None):
         self._approver = approver
 
     def request(self, result: AgentResult) -> bool:
@@ -69,12 +67,16 @@ class ApprovalGate:
 class Executor:
     """Runs agent tasks for a plan, with approval gating and audit."""
 
-    def __init__(self, agents: dict, approval_gate: Optional[ApprovalGate] = None, auto_approve: bool = False):
+    def __init__(
+        self, agents: dict, approval_gate: ApprovalGate | None = None, auto_approve: bool = False
+    ):
         self.agents: dict = agents
         self.approval_gate = approval_gate or ApprovalGate()
         self.auto_approve = auto_approve
 
-    def execute(self, run: WorkflowRun, plan: WorkflowPlan, kb: Optional[KnowledgeBase] = None) -> WorkflowRun:
+    def execute(
+        self, run: WorkflowRun, plan: WorkflowPlan, kb: KnowledgeBase | None = None
+    ) -> WorkflowRun:
         run.status = Status.RUNNING
         run.log("plan", steps=plan.to_dict()["steps"])
         for role_name in plan.steps:

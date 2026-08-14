@@ -10,7 +10,6 @@ from __future__ import annotations
 import hashlib
 import re
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 
 @dataclass
@@ -27,8 +26,8 @@ class Document:
 class KnowledgeBase:
     """In-memory keyword-search knowledge base (swap for a vector store later)."""
 
-    docs: Dict[str, Document] = field(default_factory=dict)
-    _index: Dict[str, List[str]] = field(default_factory=dict, init=False)
+    docs: dict[str, Document] = field(default_factory=dict)
+    _index: dict[str, list[str]] = field(default_factory=dict, init=False)
 
     def add(self, text: str, source: str = "") -> str:
         doc_id = hashlib.sha256(text.encode("utf-8")).hexdigest()[:12]
@@ -37,11 +36,11 @@ class KnowledgeBase:
             self._index.setdefault(token, []).append(doc_id)
         return doc_id
 
-    def search(self, query: str, top_k: int = 3) -> List[Document]:
+    def search(self, query: str, top_k: int = 3) -> list[Document]:
         tokens = re.findall(r"[a-z0-9]+", query.lower())
         if not tokens:
             return []
-        scores: Dict[str, int] = {}
+        scores: dict[str, int] = {}
         for token in tokens:
             for doc_id in self._index.get(token, []):
                 scores[doc_id] = scores.get(doc_id, 0) + 1

@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Callable, Optional
+from collections.abc import Callable
 
-from agents import Agent, Provider, build_agent
+from agents import Provider, build_agent
+from core import AgentResult, AgentRole, Status, WorkflowRun
 from knowledge import KnowledgeBase
 from observability import AuditLog
-from core import AgentResult, AgentRole, Status, WorkflowRun
 from workflow import ApprovalGate, Executor, Planner
 
 
@@ -23,9 +23,9 @@ class Orchestrator:
     def __init__(
         self,
         provider: Provider,
-        approver: Optional[Callable[[AgentResult], bool]] = None,
+        approver: Callable[[AgentResult], bool] | None = None,
         auto_approve: bool = False,
-        kb: Optional[KnowledgeBase] = None,
+        kb: KnowledgeBase | None = None,
     ):
         self.provider = provider
         self.agents: dict = {role.value: build_agent(role, provider) for role in AgentRole}

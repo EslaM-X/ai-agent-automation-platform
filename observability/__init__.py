@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 import time
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
+from typing import Any
 
 from core import WorkflowRun
 
@@ -20,7 +20,7 @@ class AuditEntry:
     timestamp: float
     workflow_id: str
     step: str
-    data: Dict[str, Any] = field(default_factory=dict)
+    data: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         return {
@@ -35,15 +35,15 @@ class AuditLog:
     """Append-only audit log for workflow runs."""
 
     def __init__(self):
-        self._entries: List[AuditEntry] = []
+        self._entries: list[AuditEntry] = []
 
     def record(self, workflow_id: str, step: str, **data) -> None:
         self._entries.append(AuditEntry(time.time(), workflow_id, step, data))
 
-    def for_workflow(self, workflow_id: str) -> List[AuditEntry]:
+    def for_workflow(self, workflow_id: str) -> list[AuditEntry]:
         return [e for e in self._entries if e.workflow_id == workflow_id]
 
-    def export(self) -> List[Dict[str, Any]]:
+    def export(self) -> list[dict[str, Any]]:
         return [e.to_dict() for e in self._entries]
 
     def export_json(self) -> str:

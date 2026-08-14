@@ -8,7 +8,7 @@ from __future__ import annotations
 import uuid
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 class AgentRole(str, Enum):
@@ -36,7 +36,7 @@ class Message:
 
     role: str
     content: str
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         return {"role": self.role, "content": self.content, "metadata": self.metadata}
@@ -49,10 +49,15 @@ class Task:
     id: str = field(default_factory=lambda: uuid.uuid4().hex[:12])
     prompt: str = ""
     role: AgentRole = AgentRole.RESEARCH
-    context: Dict[str, Any] = field(default_factory=dict)
+    context: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
-        return {"id": self.id, "prompt": self.prompt, "role": self.role.value, "context": self.context}
+        return {
+            "id": self.id,
+            "prompt": self.prompt,
+            "role": self.role.value,
+            "context": self.context,
+        }
 
 
 @dataclass
@@ -63,8 +68,8 @@ class AgentResult:
     role: AgentRole
     output: str
     passed_validation: bool = False
-    validation_notes: List[str] = field(default_factory=list)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    validation_notes: list[str] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         return {
@@ -84,8 +89,8 @@ class WorkflowRun:
     id: str = field(default_factory=lambda: uuid.uuid4().hex[:12])
     objective: str = ""
     status: Status = Status.PENDING
-    steps: List[Dict[str, Any]] = field(default_factory=list)
-    error: Optional[str] = None
+    steps: list[dict[str, Any]] = field(default_factory=list)
+    error: str | None = None
 
     def log(self, step: str, **data) -> None:
         entry = {"step": step, "data": data}

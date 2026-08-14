@@ -7,9 +7,9 @@ touches the outside world.
 import pytest
 
 from agents import AgentRole, ResearchAgent
+from core import Status
 from knowledge import KnowledgeBase
 from orchestrator import Orchestrator
-from core import Status
 from workflow import ApprovalGate, Planner
 
 
