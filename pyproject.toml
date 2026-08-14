@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-agent-automation-platform"
+version = "0.1.0"
+description = "Production-oriented AI agent orchestration platform: planning, specialized agents, human approval, execution, audit, and observability."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "EslaM-X", email = "eslam.kora60@gmail.com" }]
+keywords = ["ai", "agents", "orchestration", "workflow", "automation", "observability"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+openai = ["openai>=1.30"]
+test = ["pytest>=7.4"]
+
+[tool.setuptools.packages.find]
+include = ["core*", "agents*", "orchestrator*", "knowledge*", "workflow*", "observability*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
