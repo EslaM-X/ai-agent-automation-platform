@@ -1,0 +1,58 @@
+name: Bug report
+description: Report a reproducible bug in the platform
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. A good bug report includes the exact way to
+        reproduce it offline — the test suite never requires an LLM or keys.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the unexpected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: |
+        Paste a minimal script or test that reproduces the bug using a fake
+        provider. The platform is fully offline-testable — please keep it that way.
+      placeholder: |
+        provider = FakeProvider()
+        orc = Orchestrator(provider, auto_approve=True)
+        run = orc.run("Reproduce me")
+        assert run.status == ...
+    validations:
+      required: true
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact
+      options:
+        - Incorrect result
+        - Crash / exception
+        - Audit or metrics corruption
+        - Performance regression
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Python version and OS.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I can reproduce this offline (no API keys, no network)
+          required: true
+        - label: I ran `python -m pytest tests/` and confirm it is unrelated to a known failure

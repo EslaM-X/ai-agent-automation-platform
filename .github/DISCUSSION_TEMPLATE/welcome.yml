@@ -1,0 +1,16 @@
+labels: [discussion]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Welcome to the ai-agent-automation-platform discussions
+
+        Governed AI agents: plan, approve, execute, audit.
+
+        - **Q&A** — ask anything about installing, running, or extending the platform.
+        - **Ideas** — proposals for new roles, evaluators, policies, or hosted tiers.
+        - **Show and tell** — share the workflows you build with it.
+        - **Feedback** — what gets in the way of using it in production?
+
+        Before posting, skim the [README](../../README.md), [docs](../../docs),
+        and [ROADMAP](../../ROADMAP.md).

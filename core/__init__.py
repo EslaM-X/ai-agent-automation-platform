@@ -84,13 +84,23 @@ class AgentResult:
 
 @dataclass
 class WorkflowRun:
-    """An end-to-end record of one orchestration run (the audit trail)."""
+    """An end-to-end record of one orchestration run (the audit trail).
+
+    The run also carries execution state: a checkpoint index (for resume),
+    retry/attempt counters, idempotency linkage, and step-duration metrics.
+    """
 
     id: str = field(default_factory=lambda: uuid.uuid4().hex[:12])
     objective: str = ""
     status: Status = Status.PENDING
     steps: list[dict[str, Any]] = field(default_factory=list)
     error: str | None = None
+    checkpoint: int = 0
+    attempts: int = 0
+    retries: int = 0
+    idempotency_key: str | None = None
+    metrics: dict[str, float] = field(default_factory=dict)
+    plan: list[str] = field(default_factory=list)
 
     def log(self, step: str, **data) -> None:
         entry = {"step": step, "data": data}
@@ -103,4 +113,10 @@ class WorkflowRun:
             "status": self.status.value,
             "steps": self.steps,
             "error": self.error,
+            "checkpoint": self.checkpoint,
+            "attempts": self.attempts,
+            "retries": self.retries,
+            "idempotency_key": self.idempotency_key,
+            "metrics": self.metrics,
+            "plan": self.plan,
         }

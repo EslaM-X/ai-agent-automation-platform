@@ -52,3 +52,18 @@ class AuditLog:
     def observe(self, run: WorkflowRun) -> None:
         for step in run.steps:
             self.record(run.id, step["step"], **step["data"])
+
+    def summarize(self, run: WorkflowRun) -> dict[str, Any]:
+        """One-line operational summary: status, state, and metrics."""
+        return {
+            "workflow_id": run.id,
+            "objective": run.objective,
+            "status": run.status.value,
+            "error": run.error,
+            "checkpoint": run.checkpoint,
+            "attempts": run.attempts,
+            "retries": run.retries,
+            "events": len(run.steps),
+            "idempotency_key": run.idempotency_key,
+            "metrics": run.metrics,
+        }

@@ -1,4 +1,4 @@
-# Architecture
+# Methodology
 
 ## Pipeline
 
@@ -35,4 +35,6 @@ pending → planning → running → awaiting_approval → approved → complete
 
 ## See also
 
-- `docs/methodology.md`
+- [Architecture](architecture.md)
+- [Productization notes](productization.md)
+- [Roadmap](../ROADMAP.md)

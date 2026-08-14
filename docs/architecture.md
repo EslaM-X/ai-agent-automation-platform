@@ -3,47 +3,66 @@
 ## Layering
 
 ```
-Task
-  │
-  ▼
-Policy ──────────▶ target pose
-  │
-  ▼
-Controller ─────▶ Action (linear, angular velocity)
-  │
-  ▼
-Simulator ──────▶ State (pose, velocities, contact)
-  │
-  ▼
-Metrics ────────▶ EpisodeReport
-  │
-  ▼
-Validation ─────▶ ExperimentSummary / sim2sim report
+Objective
+   │
+   ▼
+Planner ──────────────▶ WorkflowPlan (ordered roles)
+   │
+   ▼
+Executor
+   ├── ToolPolicy ──────▶ permission check (deny-by-default)
+   ├── RetryPolicy ─────▶ retry transient failures with backoff
+   ├── ApprovalGate ────▶ human gate before irreversible work
+   └── Checkpoint ──────▶ resume from the last completed step
+   │
+   ▼
+Specialized agents ────▶ Research → Content → QA (Provider seam)
+   │
+   ▼
+Evaluation ────────────▶ deterministic rule scoring (offline)
+   │
+   ▼
+AuditLog ──────────────▶ append-only trace + operational summary
 ```
 
-## Invariants
+## Key interfaces
 
-- **Policy/planner/controller/metrics are pure** — no physics imports, fully
-  unit-testable without any engine.
-- **Simulators are interchangeable** — `reset()`, `step(action) -> State`,
-  `state` and `name` are the entire contract.
-- **Metrics are backend-agnostic** — derived from the state history alone, so
-  comparing backends is meaningful.
-- **Determinism** — the only randomness is the per-seed goal jitter; the same
-  seed yields the same report on the same backend.
+- **`Provider.complete(system, user, temperature) -> str`** — the only seam to
+  the outside world. Swap OpenAI, local models, or a fake for tests.
+- **`Agent.run(task) -> AgentResult`** — every agent returns a validated result
+  with `passed_validation` and notes.
+- **`ToolPolicy.allows(role) -> bool`** — the permission gate every dispatch
+  passes through; unknown roles are denied.
+- **`RetryPolicy.run(fn, sleep, retryable)`** — classifies and retries
+  `TransientFailure`; permanent failures abort.
+- **`KnowledgeBase.search(query, top_k) -> [Document]`** — retrieval is an
+  interface, not an implementation.
+- **`Evaluator.evaluate(run) -> EvaluationResult`** — deterministic, offline,
+  rule-based quality scoring.
+- **`AuditLog.record(...)` / `AuditLog.summarize(run)`** — append-only trace
+  plus one-line operational status, metrics, and retry counts.
 
-## Why three backends
+## State machine
 
-| Backend | Motion model | Contact model | Value |
-| --- | --- | --- | --- |
-| `kinematic` | exact unicycle | analytic circles | reference, fast, portable |
-| `mujoco` | MuJoCo free-joint integration | MuJoCo solver | real physics, reproducible |
-| `pybullet` | Bullet rigid-body | Bullet contact | real physics, independent |
+```
+pending → planning → running → awaiting_approval → approved → completed
+                          │            │
+                          ▼            ▼
+                        failed      rejected
+```
 
-The kinematic backend is the **reference**. Physics backends are real — their
-numbers can and do differ, and sim-to-sim exists to *measure* that difference.
+`failed` runs keep a checkpoint, so `Orchestrator.resume(run_id)` continues
+from the last completed step without redoing work.
+
+## Idempotency and execution state
+
+- Every `run(objective, idempotency_key=...)` stores its audited run; a replay
+  with the same key returns the original run object — no re-execution.
+- `WorkflowRun` carries `checkpoint`, `attempts`, `retries`, `metrics`, and
+  `plan`, all of which surface in `to_dict()` and `AuditLog.summarize()`.
 
 ## See also
 
 - [Methodology](methodology.md)
-- [Validation](validation.md)
+- [Productization notes](productization.md)
+- [Roadmap](../ROADMAP.md)

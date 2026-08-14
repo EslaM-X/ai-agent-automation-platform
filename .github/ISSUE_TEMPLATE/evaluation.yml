@@ -1,0 +1,41 @@
+name: Evaluation report
+description: Report a rule-evaluator gap or a scenario the platform judged incorrectly
+title: "evaluation: "
+labels: [evaluation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The `RuleEvaluator` is intentionally deterministic and offline. Use
+        this template for cases where the rules score a real output the wrong
+        way, or where a new rule would materially improve quality signals.
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Scenario
+      description: The objective, the agent outputs, and the rules used.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual
+      description: What score/verdict was expected and what was produced?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed rule or fix
+      description: A concrete `Rule` (contains / not_contains / min_length) or evaluator change.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: The scenario is reproducible offline with a deterministic provider
+          required: true
+        - label: The proposal includes a test in tests/
+          required: true
