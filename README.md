@@ -1,5 +1,7 @@
 # ai-agent-automation-platform
 
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache-2.0-blue.svg)](LICENSE) [![CI](https://github.com/EslaM-X/ai-agent-automation-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/EslaM-X/ai-agent-automation-platform/actions)
+
 > Governed AI agent orchestration: **Plan -> Specialized Agents -> Human Approval -> Execute -> Audit** — offline-testable, retry-hardened, idempotent, and permission-gated.
 
 Not a `User -> LLM -> Answer` wrapper. The platform routes work through an explicit pipeline with planning, specialized agents, a human approval gate, validation, deterministic evaluation, and a full audit trail — and the entire test suite runs with **no LLM, no API keys, no network**.
