@@ -2,6 +2,14 @@
 
 All notable changes to `ai-agent-automation-platform`.
 
+## [Unreleased]
+
+### Added
+- Architecture diagram (`docs/diagrams/ai-agent-platform.mmd`, rendered inline
+  in `docs/architecture.md`): components, control flow, failure points, and the
+  evaluation harness wired back into the architecture as the regression gate.
+  Every node maps to its module and to harness evidence in the evidence map.
+
 ## [v0.3.0] — 2026-08-15
 
 Evaluation harness release: the platform now ships with a deterministic,

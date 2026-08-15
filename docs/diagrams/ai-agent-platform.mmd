@@ -1,0 +1,45 @@
+flowchart TB
+    subgraph TRUST["Trust boundary - untrusted input"]
+        USER["User / Task<br/>objective + idempotency_key"]
+    end
+
+    ORCH["Orchestrator<br/>orchestrator/__init__.py - run / resume"]
+    IDEM["Idempotency registry<br/>key -> cached WorkflowRun"]
+    PLAN["Planner<br/>workflow/__init__.py - research -> content -> qa"]
+    POLICY["ToolPolicy<br/>core/policy.py - deny-by-default"]
+    AGENTS["Specialized agents<br/>agents/__init__.py<br/>research / content / qa / analytics<br/>over Provider (sole seam to the outside)"]
+    VALID["Output validation<br/>empty output -> fail closed"]
+    RETRY["RetryPolicy<br/>workflow/retry.py<br/>TransientFailure vs PermanentFailure<br/>core/errors.py"]
+    GATE["ApprovalGate<br/>workflow/__init__.py<br/>content step - human or auto_approve"]
+    EXEC["Executor<br/>workflow/__init__.py<br/>checkpoint / attempts / validation"]
+    EVAL["RuleEvaluator<br/>evaluation/__init__.py<br/>contains / not_contains / min_length"]
+    AUDIT["AuditLog<br/>observability/__init__.py<br/>append-only, every step"]
+
+    HARNESS["Evaluation Harness<br/>evaluation/runner.py<br/>drives the REAL Orchestrator<br/>with deterministic CaseProvider"]
+    CASES["17 cases<br/>evaluation/cases/*.json<br/>basic / approval / failure / idempotency"]
+    BASELINE["benchmarks/baseline.json<br/>committed, deterministic"]
+    CI_GATE["Regression Gate<br/>CI step: python -m evaluation.runner --gate"]
+
+    USER --> ORCH
+    ORCH --> IDEM
+    IDEM -- "key seen: replay stored run, no re-execution" --> ORCH
+    ORCH --> PLAN
+    PLAN --> POLICY
+    POLICY -- "role denied: permission_denied + failed" --> AUDIT
+    POLICY -- "allowed" --> AGENTS
+    AGENTS --> VALID
+    VALID -- "invalid: fail closed" --> AUDIT
+    VALID -- "valid" --> RETRY
+    RETRY -- "transient: backoff and retry; permanent: abort" --> AGENTS
+    RETRY -- "exhausted: audited error (after N attempts)" --> AUDIT
+    AGENTS --> GATE
+    GATE -- "rejected: stopped at checkpoint 2" --> AUDIT
+    GATE -- "approved" --> EXEC
+    EXEC --> EVAL
+    EVAL --> AUDIT
+    ORCH -- "failure: checkpoint saved, resume(run_id) continues" --> AUDIT
+
+    HARNESS --> CASES
+    HARNESS --> BASELINE
+    BASELINE --> CI_GATE
+    CI_GATE -- "regression: CI fails" --> HARNESS
