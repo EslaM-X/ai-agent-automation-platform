@@ -185,6 +185,9 @@ can land a small, reviewable change quickly.
 - Evaluation is rule-based and deterministic by design; a semantic evaluator
   can be added behind the same `Evaluator` interface.
 
+If this work is useful to you, consider starring the repository — it helps
+the project reach more engineers.
+
 ---
 
 ## License
