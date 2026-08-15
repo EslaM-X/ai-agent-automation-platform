@@ -1,0 +1,51 @@
+{
+  "schema": "ai-agent-evaluation-harness/v1",
+  "version": "0.3.0",
+  "commit": "0ba5ce42921b8dd08a9c27d5789b4ec5ab34f557",
+  "timestamp": "2026-08-15T03:23:39+03:00",
+  "gate_result": "pass",
+  "cases_total": 17,
+  "cases_passed": 17,
+  "cases_failed": 0,
+  "pass_rate": 1.0,
+  "execution_count": 49,
+  "deterministic_hash": "D28ED61D3D115E5B07E35F85C8B68714BDA4B57E1CAE62D657CDE311DE8526C5",
+  "dimensions": {
+    "auditability": {
+      "checked": 13,
+      "passed": 13,
+      "rate": 1.0
+    },
+    "correctness": {
+      "checked": 5,
+      "passed": 5,
+      "rate": 1.0
+    },
+    "execution": {
+      "checked": 17,
+      "passed": 17,
+      "rate": 1.0
+    },
+    "idempotency": {
+      "checked": 2,
+      "passed": 2,
+      "rate": 1.0
+    },
+    "policy": {
+      "checked": 2,
+      "passed": 2,
+      "rate": 1.0
+    },
+    "safety": {
+      "checked": 6,
+      "passed": 6,
+      "rate": 1.0
+    }
+  },
+  "_source_files": [
+    "approval_required.json",
+    "basic_tasks.json",
+    "failure_recovery.json",
+    "idempotency.json"
+  ]
+}

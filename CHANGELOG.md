@@ -9,6 +9,10 @@ All notable changes to `ai-agent-automation-platform`.
   in `docs/architecture.md`): components, control flow, failure points, and the
   evaluation harness wired back into the architecture as the regression gate.
   Every node maps to its module and to harness evidence in the evidence map.
+- Versioned benchmark history (`benchmarks/history/`): one snapshot per
+  released version with version, commit, timestamp, case counts, per-dimension
+  rates, execution count, deterministic hash, and gate result — turning the
+  single baseline into evidence over time. First real snapshot: v0.3.0.
 
 ## [v0.3.0] — 2026-08-15
 
