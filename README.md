@@ -33,7 +33,7 @@ That is the whole demo: a governed workflow runs (planning -> research -> conten
 Run the whole test suite in a few seconds more:
 
 ```bash
-python -m pytest tests/ -q    # 22 tests, fully offline
+python -m pytest tests/ -q    # 29 tests, fully offline
 ```
 
 A 15-30 second recording guide for this demo is in [docs/demo-recording.md](docs/demo-recording.md).
@@ -121,8 +121,9 @@ python examples/run_workflow.py    # minimal end-to-end example
 python -m pytest tests/ -v
 ```
 
-The suite is fully offline: 22 tests covering orchestration, approval,
-retries, permissions, idempotency, resume, evaluation, and observability.
+The suite is fully offline: 29 tests covering orchestration, approval,
+retries, permissions, idempotency, resume, evaluation, observability, and the
+`agent-platform` CLI.
 
 ## Evaluation harness
 
@@ -140,6 +141,24 @@ The `--gate` mode compares every case and dimension rate against the
 committed `benchmarks/baseline.json` and is wired into CI, so a behavioral
 regression fails the build. See [evaluation/README.md](evaluation/README.md).
 
+## CLI
+
+The `agent-platform` CLI is a thin interface over the evaluation harness and
+its persisted state — no separate logic. Install (or `pip install -e .`) then:
+
+```bash
+agent-platform evaluate                # run all 17 cases, print report, write benchmarks/latest.json
+agent-platform gate                    # run evaluation + fail (exit 1) on regression vs baseline
+agent-platform inspect                 # show latest execution state (per-dimension rates)
+agent-platform inspect --case EVAL-001 # drill into one case's checks
+agent-platform inspect --history       # list versioned reports from benchmarks/history/
+```
+
+Under the hood each command calls the existing harness functions:
+`evaluate`/`gate` delegate to `run_suite()` + `compare_to_baseline()` +
+`print_suite()`; `inspect` reads `benchmarks/latest.json` (and `history/`).
+Tests in `tests/test_cli.py` (7 tests) cover all three subcommands.
+
 ## Repo layout
 
 ```
@@ -151,7 +170,8 @@ evaluation/    offline rule-based evaluation + the evaluation harness (cases, ev
 observability/ audit log + summaries
 benchmarks/    committed deterministic baseline for the regression gate
 examples/      runnable demos (60s quickstart, minimal run)
-tests/         offline test suite (22 tests)
+tests/         offline test suite (29 tests)
+cli/           agent-platform CLI (thin wrapper over evaluation harness)
 docs/          architecture, methodology, productization, demo recording
 ```
 

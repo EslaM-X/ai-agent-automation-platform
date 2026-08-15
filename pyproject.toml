@@ -20,12 +20,15 @@ classifiers = [
 
 dependencies = []
 
+[project.scripts]
+agent-platform = "cli.main:main"
+
 [project.optional-dependencies]
 openai = ["openai>=1.30"]
 test = ["pytest>=7.4"]
 
 [tool.setuptools.packages.find]
-include = ["core*", "agents*", "orchestrator*", "knowledge*", "workflow*", "observability*", "evaluation*"]
+include = ["core*", "agents*", "orchestrator*", "knowledge*", "workflow*", "observability*", "evaluation*", "cli*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
