@@ -1,0 +1,242 @@
+{
+  "_meta": "Happy-path and policy cases. Every case drives the REAL Orchestrator with a deterministic CaseProvider; expectations are asserted against the resulting WorkflowRun.",
+  "cases": [
+    {
+      "id": "EVAL-001",
+      "group": "basic_tasks",
+      "objective": "Summarize the Q3 business results",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%, costs flat, churn down.",
+          "content": "Draft: Q3 was strong across revenue and retention.",
+          "qa": "QA: no blocking issues on the Q3 draft."
+        }
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "completed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 3,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": null,
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["correctness", "execution", "auditability"]
+    },
+    {
+      "id": "EVAL-002",
+      "group": "basic_tasks",
+      "objective": "Write a Q3 finance summary",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue grew 12% while costs stayed flat.",
+          "content": "Draft: finance summary ready.",
+          "qa": "QA: finance draft checks out."
+        }
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": {
+          "text": "Q3 revenue grew 12% while costs stayed flat; churn declined.",
+          "source": "finance/q3.md"
+        },
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "completed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 3,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": null,
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["correctness", "execution", "auditability"]
+    },
+    {
+      "id": "EVAL-003",
+      "group": "basic_tasks",
+      "objective": "Summarize the Q3 business results with quality rules",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%, costs flat, churn down.",
+          "content": "Draft: Q3 was strong across revenue and retention.",
+          "qa": "QA: no blocking issues on the Q3 draft."
+        }
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": [
+          {"kind": "contains", "value": "Q3"},
+          {"kind": "min_length", "value": 10},
+          {"kind": "not_contains", "value": "ERROR"}
+        ],
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "completed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 3,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": true,
+        "error_contains": null,
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["correctness", "execution", "auditability"]
+    },
+    {
+      "id": "EVAL-004",
+      "group": "basic_tasks",
+      "objective": "Summarize the Q3 business results with a failing rule",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%, costs flat, churn down.",
+          "content": "Draft: Q3 was strong across revenue and retention.",
+          "qa": "QA: no blocking issues on the Q3 draft."
+        }
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": [
+          {"kind": "contains", "value": "string-that-is-definitely-absent"}
+        ],
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "completed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 3,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": false,
+        "error_contains": null,
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["correctness", "execution", "auditability"]
+    },
+    {
+      "id": "EVAL-005",
+      "group": "basic_tasks",
+      "objective": "Summarize the Q3 business results with a denied role",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        }
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": ["research", "content"],
+        "resume": false
+      },
+      "expect": {
+        "status": "failed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 2,
+        "attempts": 2,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": "permission denied",
+        "permission_denied": true,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["policy", "execution", "auditability"]
+    },
+    {
+      "id": "EVAL-006",
+      "group": "basic_tasks",
+      "objective": "Summarize the Q3 business results with a full allowlist",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        }
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": ["research", "content", "qa"],
+        "resume": false
+      },
+      "expect": {
+        "status": "completed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 3,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": null,
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["policy", "execution", "auditability"]
+    }
+  ]
+}

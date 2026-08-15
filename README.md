@@ -124,6 +124,22 @@ python -m pytest tests/ -v
 The suite is fully offline: 22 tests covering orchestration, approval,
 retries, permissions, idempotency, resume, evaluation, and observability.
 
+## Evaluation harness
+
+Beyond unit tests, the repo ships a deterministic evaluation harness that
+drives the **real** orchestrator and proves its guarantees across six
+dimensions - correctness, policy, safety, execution, auditability,
+idempotency:
+
+```bash
+python -m evaluation.runner           # run 17 cases + print per-dimension rates
+python -m evaluation.runner --gate    # fail if behavior regressed vs baseline
+```
+
+The `--gate` mode compares every case and dimension rate against the
+committed `benchmarks/baseline.json` and is wired into CI, so a behavioral
+regression fails the build. See [evaluation/README.md](evaluation/README.md).
+
 ## Repo layout
 
 ```
@@ -131,8 +147,9 @@ orchestrator/  public entry point (idempotency, resume, policy, evaluation)
 agents/        specialized agents over a Provider interface
 workflow/      planner, approval gate, executor, retry policy
 knowledge/     retrieval interface
-evaluation/    offline rule-based evaluation
+evaluation/    offline rule-based evaluation + the evaluation harness (cases, evaluators, runner)
 observability/ audit log + summaries
+benchmarks/    committed deterministic baseline for the regression gate
 examples/      runnable demos (60s quickstart, minimal run)
 tests/         offline test suite (22 tests)
 docs/          architecture, methodology, productization, demo recording
@@ -143,6 +160,8 @@ docs/          architecture, methodology, productization, demo recording
 - [Productization notes](docs/productization.md) - what v0.2 adds and why
 - [Architecture](docs/architecture.md)
 - [Methodology](docs/methodology.md)
+- [Evaluation harness](evaluation/README.md) - dimensions, cases, regression gate
+- [Benchmarks](benchmarks/README.md) - baseline policy
 - [Roadmap](ROADMAP.md) - free / hosted tiers, evaluation, contributor funnel
 
 ## Contributing

@@ -1,0 +1,1270 @@
+{
+  "schema": "ai-agent-evaluation-harness/v1",
+  "cases_total": 17,
+  "cases_passed": 17,
+  "cases_failed": 0,
+  "dimensions": {
+    "auditability": {
+      "checked": 13,
+      "passed": 13,
+      "rate": 1.0
+    },
+    "correctness": {
+      "checked": 5,
+      "passed": 5,
+      "rate": 1.0
+    },
+    "execution": {
+      "checked": 17,
+      "passed": 17,
+      "rate": 1.0
+    },
+    "idempotency": {
+      "checked": 2,
+      "passed": 2,
+      "rate": 1.0
+    },
+    "policy": {
+      "checked": 2,
+      "passed": 2,
+      "rate": 1.0
+    },
+    "safety": {
+      "checked": 6,
+      "passed": 6,
+      "rate": 1.0
+    }
+  },
+  "cases": [
+    {
+      "id": "EVAL-007",
+      "group": "approval_required",
+      "source": "approval_required.json",
+      "objective": "Approve or reject a content draft with no approver configured",
+      "status": "rejected",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "safety.approval_requested",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "approval_entries=1 expected=1"
+          ]
+        },
+        {
+          "checker": "safety.approval_decision",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "approved=False expected_status=rejected"
+          ]
+        },
+        {
+          "checker": "safety.rejected_stops",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "dispatched=['research', 'content'] stopped_before_qa=True"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=1 expected=1"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=2 expected=2"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=7 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "safety": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-008",
+      "group": "approval_required",
+      "source": "approval_required.json",
+      "objective": "Approve or reject a content draft with an accepting approver",
+      "status": "completed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "safety.approval_requested",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "approval_entries=1 expected=1"
+          ]
+        },
+        {
+          "checker": "safety.approval_decision",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "approved=True expected_status=completed"
+          ]
+        },
+        {
+          "checker": "execution.step_order",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "dispatch_order=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=10 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "safety": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-009",
+      "group": "approval_required",
+      "source": "approval_required.json",
+      "objective": "Approve or reject a content draft with a rejecting approver",
+      "status": "rejected",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "safety.approval_requested",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "approval_entries=1 expected=1"
+          ]
+        },
+        {
+          "checker": "safety.approval_decision",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "approved=False expected_status=rejected"
+          ]
+        },
+        {
+          "checker": "safety.rejected_stops",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "dispatched=['research', 'content'] stopped_before_qa=True"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=1 expected=1"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=2 expected=2"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        }
+      ],
+      "dimensions": {
+        "safety": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-010",
+      "group": "approval_required",
+      "source": "approval_required.json",
+      "objective": "Auto-approved run must still record the approval gate",
+      "status": "completed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "safety.approval_requested",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "approval_entries=1 expected=1"
+          ]
+        },
+        {
+          "checker": "safety.approval_decision",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "approved=True expected_status=completed"
+          ]
+        },
+        {
+          "checker": "execution.step_order",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "dispatch_order=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=10 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "safety": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-001",
+      "group": "basic_tasks",
+      "source": "basic_tasks.json",
+      "objective": "Summarize the Q3 business results",
+      "status": "completed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "correctness.status",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "status=completed expected=completed"
+          ]
+        },
+        {
+          "checker": "correctness.plan",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "plan=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.step_order",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "dispatch_order=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=10 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "correctness": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-002",
+      "group": "basic_tasks",
+      "source": "basic_tasks.json",
+      "objective": "Write a Q3 finance summary",
+      "status": "completed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "correctness.status",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "status=completed expected=completed"
+          ]
+        },
+        {
+          "checker": "correctness.plan",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "plan=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.step_order",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "dispatch_order=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=10 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "correctness": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-003",
+      "group": "basic_tasks",
+      "source": "basic_tasks.json",
+      "objective": "Summarize the Q3 business results with quality rules",
+      "status": "completed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "correctness.status",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "status=completed expected=completed"
+          ]
+        },
+        {
+          "checker": "correctness.plan",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "plan=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "correctness.evaluation",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "evaluation_passed=True expected=True"
+          ]
+        },
+        {
+          "checker": "execution.step_order",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "dispatch_order=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=11 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "correctness": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-004",
+      "group": "basic_tasks",
+      "source": "basic_tasks.json",
+      "objective": "Summarize the Q3 business results with a failing rule",
+      "status": "completed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "correctness.status",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "status=completed expected=completed"
+          ]
+        },
+        {
+          "checker": "correctness.plan",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "plan=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "correctness.evaluation",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "evaluation_passed=False expected=False"
+          ]
+        },
+        {
+          "checker": "execution.step_order",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "dispatch_order=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=11 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "correctness": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-005",
+      "group": "basic_tasks",
+      "source": "basic_tasks.json",
+      "objective": "Summarize the Q3 business results with a denied role",
+      "status": "failed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "policy.denied",
+          "dimension": "policy",
+          "passed": true,
+          "notes": [
+            "status=failed error='permission denied for role qa' audited=True"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=2 expected=2"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=2 expected=2"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=8 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "policy": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-006",
+      "group": "basic_tasks",
+      "source": "basic_tasks.json",
+      "objective": "Summarize the Q3 business results with a full allowlist",
+      "status": "completed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "policy.allowed",
+          "dimension": "policy",
+          "passed": true,
+          "notes": [
+            "dispatched=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.step_order",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "dispatch_order=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=10 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "policy": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-011",
+      "group": "failure_recovery",
+      "source": "failure_recovery.json",
+      "objective": "Transient failure must be retried and then succeed",
+      "status": "completed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "correctness.status",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "status=completed expected=completed"
+          ]
+        },
+        {
+          "checker": "correctness.plan",
+          "dimension": "correctness",
+          "passed": true,
+          "notes": [
+            "plan=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "safety.approval_requested",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "approval_entries=1 expected=1"
+          ]
+        },
+        {
+          "checker": "safety.approval_decision",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "approved=True expected_status=completed"
+          ]
+        },
+        {
+          "checker": "execution.step_order",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "dispatch_order=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=4 expected=4"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=1 expected=1"
+          ]
+        }
+      ],
+      "dimensions": {
+        "correctness": {
+          "checked": true,
+          "passed": true
+        },
+        "safety": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-012",
+      "group": "failure_recovery",
+      "source": "failure_recovery.json",
+      "objective": "Exhausted retries must fail the run with an audited error",
+      "status": "failed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=0 expected=0"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=2 expected=2"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=1 expected=1"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=4 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-013",
+      "group": "failure_recovery",
+      "source": "failure_recovery.json",
+      "objective": "Permanent failure must abort without retrying",
+      "status": "failed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=2 expected=2"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=9 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-014",
+      "group": "failure_recovery",
+      "source": "failure_recovery.json",
+      "objective": "A failed run must resume from its checkpoint without redoing work",
+      "status": "completed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=4 expected=4"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "execution.resume",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "resumed_status=completed research_calls=1 content_calls=1 qa_calls=2"
+          ]
+        }
+      ],
+      "dimensions": {
+        "execution": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-015",
+      "group": "failure_recovery",
+      "source": "failure_recovery.json",
+      "objective": "Empty agent output must fail closed instead of completing with garbage",
+      "status": "failed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "safety.fail_closed",
+          "dimension": "safety",
+          "passed": true,
+          "notes": [
+            "status=failed error='validation failed for qa'"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=2 expected=2"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=9 missing=[]"
+          ]
+        }
+      ],
+      "dimensions": {
+        "safety": {
+          "checked": true,
+          "passed": true
+        },
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-016",
+      "group": "idempotency",
+      "source": "idempotency.json",
+      "objective": "Replaying a completed run with the same key must return the original run",
+      "status": "completed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "execution.step_order",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "dispatch_order=['research', 'content', 'qa']"
+          ]
+        },
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "auditability.audit",
+          "dimension": "auditability",
+          "passed": true,
+          "notes": [
+            "audit_entries=10 missing=[]"
+          ]
+        },
+        {
+          "checker": "idempotency.replay",
+          "dimension": "idempotency",
+          "passed": true,
+          "notes": [
+            "replay_returns_same_id=True"
+          ]
+        },
+        {
+          "checker": "idempotency.calls",
+          "dimension": "idempotency",
+          "passed": true,
+          "notes": [
+            "provider_calls=3 expected=3"
+          ]
+        }
+      ],
+      "dimensions": {
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "auditability": {
+          "checked": true,
+          "passed": true
+        },
+        "idempotency": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "EVAL-017",
+      "group": "idempotency",
+      "source": "idempotency.json",
+      "objective": "Replaying a failed run with the same key must return the original failed run",
+      "status": "failed",
+      "passed": true,
+      "checks": [
+        {
+          "checker": "execution.checkpoint",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "checkpoint=2 expected=2"
+          ]
+        },
+        {
+          "checker": "execution.attempts",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "attempts=3 expected=3"
+          ]
+        },
+        {
+          "checker": "execution.retries",
+          "dimension": "execution",
+          "passed": true,
+          "notes": [
+            "retries=0 expected=0"
+          ]
+        },
+        {
+          "checker": "idempotency.replay",
+          "dimension": "idempotency",
+          "passed": true,
+          "notes": [
+            "replay_returns_same_id=True"
+          ]
+        },
+        {
+          "checker": "idempotency.calls",
+          "dimension": "idempotency",
+          "passed": true,
+          "notes": [
+            "provider_calls=3 expected=3"
+          ]
+        }
+      ],
+      "dimensions": {
+        "execution": {
+          "checked": true,
+          "passed": true
+        },
+        "idempotency": {
+          "checked": true,
+          "passed": true
+        }
+      }
+    }
+  ],
+  "_source_files": [
+    "approval_required.json",
+    "basic_tasks.json",
+    "failure_recovery.json",
+    "idempotency.json"
+  ]
+}

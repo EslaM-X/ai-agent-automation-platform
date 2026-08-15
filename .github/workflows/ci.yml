@@ -28,6 +28,9 @@ jobs:
       - name: Smoke test the 60-second demo (offline)
         run: python examples/demo_60s.py
 
+      - name: Evaluation harness + regression gate
+        run: python -m evaluation.runner --gate
+
   lint:
     name: Lint
     runs-on: ubuntu-latest

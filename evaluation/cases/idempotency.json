@@ -1,0 +1,82 @@
+{
+  "_meta": "Idempotency cases. Replays with the same idempotency key must return the original audited run and never re-execute provider calls.",
+  "cases": [
+    {
+      "id": "EVAL-016",
+      "group": "idempotency",
+      "objective": "Replaying a completed run with the same key must return the original run",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        }
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": "q3-summary",
+        "replay": true,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "completed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 3,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": null,
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": 3
+      },
+      "checks": ["idempotency", "execution", "auditability"]
+    },
+    {
+      "id": "EVAL-017",
+      "group": "idempotency",
+      "objective": "Replaying a failed run with the same key must return the original failed run",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        },
+        "raise_always": {"qa": "permanent"}
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": "doomed-run",
+        "replay": true,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "failed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 2,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": "permanent failure",
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": 3
+      },
+      "checks": ["idempotency", "execution"]
+    }
+  ]
+}

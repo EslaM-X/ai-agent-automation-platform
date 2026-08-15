@@ -1,0 +1,199 @@
+{
+  "_meta": "Failure-handling cases. Retries must classify transient vs permanent failures, fail closed on validation, and resume from checkpoints without redoing completed work.",
+  "cases": [
+    {
+      "id": "EVAL-011",
+      "group": "failure_recovery",
+      "objective": "Transient failure must be retried and then succeed",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        },
+        "raise_once": {"research": "transient"}
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "completed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 3,
+        "attempts": 4,
+        "retries": 1,
+        "evaluation_passed": null,
+        "error_contains": null,
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["correctness", "execution", "safety"]
+    },
+    {
+      "id": "EVAL-012",
+      "group": "failure_recovery",
+      "objective": "Exhausted retries must fail the run with an audited error",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        },
+        "raise_always": {"research": "transient"}
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 2,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "failed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 0,
+        "attempts": 2,
+        "retries": 1,
+        "evaluation_passed": null,
+        "error_contains": "after 2 attempts",
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["execution", "safety", "auditability"]
+    },
+    {
+      "id": "EVAL-013",
+      "group": "failure_recovery",
+      "objective": "Permanent failure must abort without retrying",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        },
+        "raise_always": {"qa": "permanent"}
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "failed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 2,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": "permanent failure",
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["execution", "safety", "auditability"]
+    },
+    {
+      "id": "EVAL-014",
+      "group": "failure_recovery",
+      "objective": "A failed run must resume from its checkpoint without redoing work",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        },
+        "raise_once": {"qa": "permanent"}
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": true
+      },
+      "expect": {
+        "status": "completed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 3,
+        "attempts": 4,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": null,
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": true,
+        "provider_calls": null
+      },
+      "checks": ["execution"]
+    },
+    {
+      "id": "EVAL-015",
+      "group": "failure_recovery",
+      "objective": "Empty agent output must fail closed instead of completing with garbage",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": ""
+        }
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "failed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 2,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": "validation failed",
+        "permission_denied": false,
+        "validation_fails": true,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["safety", "execution", "auditability"]
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "_meta": "Approval-discipline cases. The content step must pass through the ApprovalGate; the run must reflect the approver's decision and never proceed past a rejected gate.",
+  "cases": [
+    {
+      "id": "EVAL-007",
+      "group": "approval_required",
+      "objective": "Approve or reject a content draft with no approver configured",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        }
+      },
+      "config": {
+        "auto_approve": false,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "rejected",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 1,
+        "attempts": 2,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": "human rejected",
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["safety", "execution", "auditability"]
+    },
+    {
+      "id": "EVAL-008",
+      "group": "approval_required",
+      "objective": "Approve or reject a content draft with an accepting approver",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        }
+      },
+      "config": {
+        "auto_approve": false,
+        "approver_accepts": true,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "completed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 3,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": null,
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["safety", "execution", "auditability"]
+    },
+    {
+      "id": "EVAL-009",
+      "group": "approval_required",
+      "objective": "Approve or reject a content draft with a rejecting approver",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        }
+      },
+      "config": {
+        "auto_approve": false,
+        "approver_accepts": false,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "rejected",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 1,
+        "attempts": 2,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": "human rejected",
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["safety", "execution"]
+    },
+    {
+      "id": "EVAL-010",
+      "group": "approval_required",
+      "objective": "Auto-approved run must still record the approval gate",
+      "provider": {
+        "replies": {
+          "research": "Facts: Q3 revenue up 12%.",
+          "content": "Draft: Q3 summary ready.",
+          "qa": "QA: no blocking issues."
+        }
+      },
+      "config": {
+        "auto_approve": true,
+        "approver_accepts": null,
+        "retry_max_attempts": 3,
+        "retry_base_delay": 0.0,
+        "evaluator_rules": null,
+        "kb_doc": null,
+        "idempotency_key": null,
+        "replay": false,
+        "policy": null,
+        "resume": false
+      },
+      "expect": {
+        "status": "completed",
+        "plan": ["research", "content", "qa"],
+        "checkpoint": 3,
+        "attempts": 3,
+        "retries": 0,
+        "evaluation_passed": null,
+        "error_contains": null,
+        "permission_denied": false,
+        "validation_fails": false,
+        "resume": false,
+        "provider_calls": null
+      },
+      "checks": ["safety", "execution", "auditability"]
+    }
+  ]
+}

@@ -2,6 +2,34 @@
 
 All notable changes to `ai-agent-automation-platform`.
 
+## [v0.3.0] — 2026-08-15
+
+Evaluation harness release: the platform now ships with a deterministic,
+offline harness that proves its own guarantees and gates CI against a
+committed baseline.
+
+### Added
+- Evaluation harness (`evaluation/runner.py`, `evaluation/evaluators/`,
+  `evaluation/metrics.py`, `evaluation/report.py`): drives the real
+  `Orchestrator` with case-defined providers (no LLM, no network) and asserts
+  behavior across six dimensions - correctness, policy, safety, execution,
+  auditability, idempotency.
+- 17 scenario cases in `evaluation/cases/` (basic, approval, failure recovery,
+  idempotency), including transient-vs-permanent failures, exhausted retries,
+  resume-without-redo, validation fail-closed, and replay semantics.
+- Regression gate: `python -m evaluation.runner --gate` compares every case
+  and dimension rate against the committed `benchmarks/baseline.json` and
+  fails on any regression; wired into CI on every push/PR.
+- `benchmarks/` with a committed, deterministic baseline and a gitignored
+  `latest.json` for local inspection.
+- `docs/` pointers and README section documenting the harness and how to
+  refresh the baseline only for intended behavior changes.
+
+### Changed
+- Package version 0.2.0 -> 0.3.0.
+- CI now runs the harness gate in addition to tests, lint, and the demo smoke
+  test.
+
 ## [v0.2.0] — 2026-08-14
 
 Productization release: the engineering lab becomes an installable,
