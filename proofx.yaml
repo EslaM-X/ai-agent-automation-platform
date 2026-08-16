@@ -1,0 +1,10 @@
+version: "1.0"
+project: "EslaM-X/ai-agent-automation-platform"
+artifacts:
+  - README.md
+  - pyproject.toml
+  - LICENSE
+lockfiles: []
+claims:
+  - "Built from the recorded git commit"
+  - "Artifacts have known sha256 digests"

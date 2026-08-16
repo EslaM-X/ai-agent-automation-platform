@@ -1,6 +1,6 @@
 # ai-agent-automation-platform
 
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache-2.0-blue.svg)](LICENSE) [![CI](https://github.com/EslaM-X/ai-agent-automation-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/EslaM-X/ai-agent-automation-platform/actions)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache-2.0-blue.svg)](LICENSE) [![CI](https://github.com/EslaM-X/ai-agent-automation-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/EslaM-X/ai-agent-automation-platform/actions) [![ProofX Verified](https://img.shields.io/badge/ProofX-Verified-FFB627?logo=shield&logoColor=white)](https://github.com/EslaM-X/proofx)
 
 > Governed AI agent orchestration: **Plan -> Specialized Agents -> Human Approval -> Execute -> Audit** — offline-testable, retry-hardened, idempotent, and permission-gated.
 
