@@ -1,0 +1,84 @@
+{
+  "proofVersion": "1.0",
+  "id": "PX-daa03181",
+  "project": {
+    "name": "EslaM-X/ai-agent-automation-platform",
+    "repository": "EslaM-X/ai-agent-automation-platform"
+  },
+  "subject": {
+    "commit": "75ac552ccb780c8160517060a6329be2fc41d9a3",
+    "branch": "main",
+    "repository": "EslaM-X/ai-agent-automation-platform"
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Built from the recorded git commit",
+      "status": "evidenced"
+    },
+    {
+      "id": "c2",
+      "text": "Artifacts have known sha256 digests",
+      "status": "evidenced"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "artifact",
+      "type": "artifact",
+      "source": "sha256 of configured artifacts",
+      "timestamp": "2026-08-17T10:05:00Z",
+      "payload": "{\"files\":{\"LICENSE\":\"f06177f90e2399620eb3b5d80e705d3c7217b6b4457f5452d27b2b94dba88022\",\"README.md\":\"a9b5d7c4a38e3244bde7b0fbe45343cb808dbf0b1cdd6930898bab6cdfdf05f6\",\"pyproject.toml\":\"78d143c0ed59fce04c51dfe5b8f8b11576ce5aa1221d5fd236b55cca2561b97f\"}}",
+      "digest": "578ebe7f8e351b30968d1fb21ae3678a63c71dabf0820f96cd878ac67a0e3969"
+    },
+    {
+      "id": "environment",
+      "type": "environment",
+      "source": "build toolchain + os",
+      "timestamp": "2026-08-17T10:05:00Z",
+      "payload": "{\"go_version\":\"go version go1.26.5 windows/amd64\",\"node_version\":\"v24.18.0\",\"os\":\"windows\"}",
+      "digest": "656ba252b0775ce878ec6ecc7a99745231ddd6facf195316211ba5e0f63f275d"
+    },
+    {
+      "id": "git",
+      "type": "git",
+      "source": "git: https://github.com/EslaM-X/ai-agent-automation-platform.git",
+      "timestamp": "2026-08-17T10:05:00Z",
+      "payload": "{\"branch\":\"main\",\"commit\":\"75ac552ccb780c8160517060a6329be2fc41d9a3\",\"commit_time\":\"2026-08-16T10:41:03+03:00\",\"dirty\":true,\"repository\":\"https://github.com/EslaM-X/ai-agent-automation-platform.git\"}",
+      "digest": "565b358eccc31d401bfbb54bfaaf1f3b47b671b1d3080aa2688a902592002712"
+    }
+  ],
+  "binding": {
+    "algorithm": "sha256",
+    "root": "daa03181772b8fe48d0efe800e3752ec40a1a5a61c9a800009cd85dac788f008",
+    "entries": [
+      {
+        "id": "artifact",
+        "digest": "578ebe7f8e351b30968d1fb21ae3678a63c71dabf0820f96cd878ac67a0e3969"
+      },
+      {
+        "id": "environment",
+        "digest": "656ba252b0775ce878ec6ecc7a99745231ddd6facf195316211ba5e0f63f275d"
+      },
+      {
+        "id": "git",
+        "digest": "565b358eccc31d401bfbb54bfaaf1f3b47b671b1d3080aa2688a902592002712"
+      }
+    ]
+  },
+  "signature": {
+    "algorithm": "ed25519",
+    "publicKey": "xMzkUohX7yLRPcFDN45KWGM2s4wC9n2btkdB+n1qxAM=",
+    "value": "o4g5kIQbwPAaq3Oya3lgpa6YRbIXAaQDK1ONBaP43UWhYFD8E50KE6akToaKJjBDK6buM9i5iLdNBb5bOKtDDw=="
+  },
+  "coverage": {
+    "total": 3,
+    "verified": 3,
+    "score": 100
+  },
+  "createdAt": "2026-08-17T10:05:00Z",
+  "builder": {
+    "name": "proofx",
+    "version": "0.2.1"
+  }
+}
